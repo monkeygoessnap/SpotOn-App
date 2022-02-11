@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block main %}
+    <div text-align="center">
+        <p><img src="/static/img/spotonlogo_b.png"><hr>
+        </p>
+        <h1>Don't have an account?</h1>
+        Register for free <a href="/register" style="color: #3A3A3A; font-size: 20px;">here!</a>
+        <br>
+    </div>
+    <div>
+    <form action="/login" method="post">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name ="username" placeholder="Username" type="text" required>
+        </div>
+        <div class="form-group">
+            <input autocomplete="off" class="form-control" name ="password" minlength="3" placeholder="Password (min. 3 char)" type="password" required>
+        </div>
+        
+        <button id="btn" type="submit">Login</button>
+    </form>
+    </div>
+{% endblock %}

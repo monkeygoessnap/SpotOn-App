@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <div text-align="center">
+        <p><img src="/static/img/spotonlogo_b.png"><hr>
+        </p>
+        <h1>Register a free account.</h1>
+        Kindly fill in all fields.
+    </div>
+    <br>
+    <div>
+    <form action="/register" method="post">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name ="username" placeholder="Username" type="text" required>
+        </div>
+        <div class="form-group">
+            <input autocomplete="off" class="form-control" name ="password" minlength="3" placeholder="Password (min. 3 char)" type="password" required>
+        </div>
+        <div class="form-group">
+            <input autocomplete="off" class="form-control" name ="confirmation" placeholder="Confirm Password" type="password" required>
+        </div>
+        <div class="form-group">
+            <input autocomplete="off" class="form-control" name ="email" placeholder="Email" type="email" required>
+        </div>    
+        
+        <button id="btn" type="submit">Register</button>
+    </form>
+    </div>
+{% endblock %}

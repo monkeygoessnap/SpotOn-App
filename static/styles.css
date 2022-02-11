@@ -1,0 +1,226 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+}
+
+nav .navbar-brand
+{
+    /* size for brand */
+    font-size: xx-large;
+}
+
+main .form-control
+{
+    /* Center form controls */
+    display: inline-block;
+
+    /* Override Bootstrap's 100% width for form controls */
+    width: auto;
+  border-radius: 0;
+  border: 0;
+  padding: 10px;
+  background-color: rgba(255,255,255,0.3);
+  border: 1px solid white;
+  color: white;
+  font-weight: 200;
+  font-size: 20px;
+  transition: 0.5s;
+}
+main .form-control:hover{
+    border-color: #00ffff;
+  transition: 0.5s;
+}
+
+main
+{
+    /* Center contents */
+    text-align: center;
+    
+}
+
+main img
+{
+    /* Constrain images on small screens */
+    max-width: 100%;
+}
+
+#output {
+    max-height:400px;
+}
+
+#b1 {
+    background-color: #616161;
+    color: #ffffff;
+}
+
+.section {
+    padding-bottom: 1rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 0.5rem;
+}
+
+.container {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    text-align: center;
+    width: 90%;
+}
+
+#con {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    width: auto;
+    padding-top:10px;
+    max-height:100%;
+}
+
+table {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.hero-image {
+  background-color: #cccccc;
+  height: 400px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+.hero-text {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+}
+
+body {
+    padding-top: 60px;
+    background: linear-gradient(to right, #9ED9CCFF 0%, #008C76FF 100%);
+    font-family: "Helvetica", sans-serif;
+    color: white;
+}
+
+#sky {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+#shootingstars {
+  margin: 0;
+  padding: 0;
+  width: 150vh;
+  height: 100vw;
+  position: fixed;
+  overflow: hidden;
+  transform: translatex(calc(50vw - 50%)) translatey(calc(50vh - 50%))
+    rotate(120deg);
+}
+
+.wish {
+  height: 2px;
+  top: 300px;
+  width: 100px;
+  margin: 0;
+  opacity: 0;
+  padding: 0;
+  background-color: white;
+  position: absolute;
+  background: linear-gradient(-45deg, white, rgba(0, 0, 255, 0));
+  filter: drop-shadow(0 0 6px white);
+  overflow: hidden;
+}
+
+#btn {
+  width: 150px;
+  border-radius: 0;
+  border: 0;
+  padding: 10px;
+  background-color: transparent;
+  border: 1px solid white;
+  color: white;
+  font-weight: 200;
+  font-size: 20px;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+#btn:hover {
+  border-color: #00ffff;
+  transition: 0.5s;
+}
+
+#navlogo {
+    width: auto;
+    height: 30px;
+}
+
+/*responsive box: credits to w3schools.com*/
+
+.row {
+  display: flex;
+}
+
+.column {
+  width: 33.33%;
+  padding: 5px;
+  
+}
+
+/* Clearfix (clear floats) */
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+#box {
+    background-color:#FFFFFF;
+    color:#636363;
+    font-size:14px;
+    text-align:center;
+    word-wrap: break-word;
+    height:auto;
+    width:320px;
+    box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    border-radius: 25px;
+    margin:10px;
+}
+
+#userbox {
+    background-color:#3C3C3C;
+    color:#FFFFFF;
+    font-size:20px;
+    text-align:center;
+    word-wrap: break-word;
+    height:auto;
+    margin:auto;
+    width:320px;
+    box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    border-radius: 25px;
+}
+
+
+@media screen and (max-width: 500px) {
+  .column {
+    width: 100%;
+  }
+}

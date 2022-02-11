@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sorry!
+{% endblock %}
+
+{% block main %}
+    <div text-align="center">
+        <h2>{{ top | urlencode }}</h2>
+        <p><img src="/static/img/errpic.png">
+        </p>
+        <h2>{{ bottom | urlencode }}</h2>
+    </div>
+{% endblock %}

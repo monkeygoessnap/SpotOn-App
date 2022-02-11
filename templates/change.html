@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Edit Profile
+{% endblock %}
+
+{% block main %}
+    <div>
+        <h1>Change/Update Profile</h1>
+        Leave fields empty if no change.
+    </div>
+    <br>
+    <form action="/change" method="post" enctype=multipart/form-data>
+        <div class="form-group">
+            <input autocomplete="off" class="form-control" name ="password" minlength="3" placeholder="New Password" type="password">
+        </div>
+        <div class="form-group">
+            <input autocomplete="off" class="form-control" name ="confirmation" placeholder="Confirm Password" type="password">
+        </div>
+        <div class="form-group">
+            <input autocomplete="off" class="form-control" name ="email" placeholder="New Email" type="email">
+        </div>    
+        <div class="form-group">
+            Profile Pic
+            <input class="form-control" name ="file" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)"><hr>
+            <img id="output">
+            <script>
+            var loadFile = function(event) {
+            var output = document.getElementById('output');
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function() {
+            URL.revokeObjectURL(output.src) // free memory
+            }
+            };
+            </script>
+        </div>    
+        
+        <button id="btn" type="submit">Submit</button>
+    </form>
+{% endblock %}

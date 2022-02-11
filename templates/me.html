@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Me
+{% endblock %}
+
+{% block main %}
+    <div id="box" style="width:90%; margin:auto">
+        <h1>{{ username }}'s Spots</h1>
+        <i>The more the merrier!</i>
+    </div>
+    {% if r==0 %}
+        <br>Looking a little bit empty here, why not <a href="/create" style="color:#000000; font-size:20px">create one</a> today!<br>
+    {% endif %}
+    <div class="row" text-align="center">
+        {% for data in rows %}
+        <div class="coloumn">
+            <div id="box">
+                <img src={{ data.pic | joinroute }} style="max-height:55%; max-width:100%"><br>
+                <div style="padding-left:2px;padding-right:2px">
+                Event | {{ data.des }}<br>
+                Postal | {{ data.postal }}<br>
+                Place | {{ data.postal | placename }}<br>
+                Created On {{ data.date }} | 
+                {{ data.time }}<br>
+                Delete (?)<br>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

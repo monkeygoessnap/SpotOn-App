@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Profile
+{% endblock %}
+
+{% block main %}
+    <div id="userbox">
+        <h1 style="padding-top:10px">Profile</h1>
+    {% for data in rows %}
+        {% if data.profilepic != None %}
+            <img src="{{ data.profilepic | joinroute }}" style="max-height:55%"><br>
+        {% else %}    
+            Pic | None<hr>
+        {% endif %}
+        <hr>
+        Username | {{ data.username }}<hr>
+        Email | {{ data.email }}<hr>
+    {% endfor %}
+    </div>
+    <a href="/change"><button id="btn" type="submit">Edit Profile</button></a>
+{% endblock %}
