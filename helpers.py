@@ -1,19 +1,10 @@
-import os
 import requests
-import urllib.parse
-import cs50
 
-from cs50 import SQL
-
-from flask import redirect, render_template, request, session, url_for, Flask, flash
+from flask import redirect, render_template, session
 from functools import wraps
-from werkzeug.utils import secure_filename
 
 # configurations
-# credits to CS50 Finance problemset for the initial helper functions
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
-db = SQL("sqlite:///project.db")
-
 
 def apology(message, code=400):
     """Render message as an apology to user."""
@@ -71,16 +62,7 @@ def joinroute(file):
 
 # custom function to create latlong values to plot into Folium from SG postalcode
 
-def latlong(postal):
-    # rows = db.execute("SELECT lat, long FROM sg WHERE postal=?", postal)
-    # if rows:
-    #     coord = []
-    #     coord.append(float(rows[0]["lat"]))
-    #     coord.append(float(rows[0]["long"]))
-    #     return coord
-    # else:
-    #     return None 
-    
+def latlong(postal):    
     params = {
            'searchVal': postal,
            'returnGeom': 'Y',

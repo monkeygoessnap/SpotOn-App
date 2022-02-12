@@ -2,7 +2,7 @@
 ## Description:
 GUTS Team 14 Project for SAS
 ## Tech stack:
-Python, SQlite, HTML/CSS/JS
+Python, SQLite, HTML/CSS/JS
 ## 3rd-party Libraries:
 Folium, Flask
 ## Features:
