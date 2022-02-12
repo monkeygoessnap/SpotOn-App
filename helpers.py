@@ -71,11 +71,22 @@ def joinroute(file):
 
 
 def latlong(postal):
-    rows = db.execute("SELECT lat, long FROM sg WHERE postal=?", postal)
-    if rows:
-        coord = []
-        coord.append(float(rows[0]["lat"]))
-        coord.append(float(rows[0]["long"]))
-        return coord
-    else:
-        return None
+    #rows = db.execute("SELECT lat, long FROM sg WHERE postal=?", postal)
+    params = {
+            'searchVal': postal,
+            'returnGeom': 'Y',
+            'getAddrDetails': 'N',
+            'pageNum': "1"
+        }
+    api_result = requests.get('https://developers.onemap.sg/commonapi/search', params, timeout=0.2)
+    api_response = api_result.json()
+    
+    #if rows:
+    
+    coord = []
+    coord.append(float(api_response["results"][0]["LATITUDE"]))
+    coord.append(float(api_response["results"][0]["LONGITUDE"]))
+    return coord
+
+    #else:
+    #    return None
