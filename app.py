@@ -5,7 +5,7 @@ from folium import plugins
 from cs50 import SQL
 from flask import Flask, redirect, render_template, request, session
 from flask_session import Session
-from tempfile import mkdtemp
+from tempfile import TemporaryFile, mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -22,7 +22,6 @@ app.config['MAX_CONTENT_LENGTH'] = 6 * 1024 * 1024
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
-
 # Ensure responses aren't cached
 @app.after_request
 def after_request(response):
@@ -33,7 +32,6 @@ def after_request(response):
     
 
 # Custom Jinja filter
-app.jinja_env.filters["placename"] = placename
 app.jinja_env.filters["joinroute"] = joinroute
 
 
@@ -43,18 +41,14 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-
 # Configure CS50 Library to use SQLite database
 # Credits to Geonames.org for SG postal code data which was loaded into project.db by own custom function
 db = SQL("sqlite:///project.db")
 
-
 @app.route("/")
-# @login_required
 def index():
     """Home page"""
     return render_template("index.html")
-
 
 @app.route("/me", methods=["GET"])
 @login_required
@@ -67,9 +61,7 @@ def me():
         r = rows[0]
     except Exception:
         r = 0
-    
     return render_template("me.html", rows=rows, r=r, username=username)
-
 
 @app.route("/profile", methods=["GET"])
 @login_required
@@ -77,7 +69,6 @@ def profile():
     """Profile Page"""
     sess_id = session["user_id"]
     rows = db.execute("SELECT * FROM users WHERE id = ?", sess_id)
-    
     return render_template("profile.html", rows=rows)
     
 
@@ -95,7 +86,6 @@ def change():
         
         # filename checker
         if allowed_file(file.filename):
-            # filename = secure_filename(file.filename)
             # own filenaming convention
             f = (str(sess_id), "_pp.", file.content_type[6:])
             filename = "".join(f)
@@ -121,10 +111,8 @@ def change():
         return redirect("/profile")
         
     else:
-        
         return render_template("change.html")
     
-
 @app.route("/around", methods=["GET"])
 @login_required
 def around():
@@ -133,7 +121,7 @@ def around():
     # Folium Map Initialization center to SG
     m = folium.Map(location=[1.3541, 103.8198], tiles="OpenStreetMap", zoom_start=12, control_scale=True)
     rows = db.execute(
-        "SELECT des, date, time, pic, postal, username, profilepic FROM spots JOIN users on users.id=spots.p_id WHERE id = ?", sess_id)
+        "SELECT des, date, time, pic, postal, lat, long, username, profilepic FROM spots JOIN users on users.id=spots.p_id WHERE id = ?", sess_id)
     
     custom_cluster = plugins.MarkerCluster(options={'showCoverageOnHover': False,
                                                     'zoomToBoundsOnClick': True,
@@ -142,7 +130,7 @@ def around():
     
     for data in rows:
         # Checks if custom function returns a value for Lat Long
-        if latlong(data["postal"]) == None:
+        if data["lat"] == None:
             continue
         else:
             try:
@@ -157,17 +145,17 @@ def around():
             """, script=True)
             popup = folium.Popup(custom, max_width=700)
             folium.Marker(
-                location=[latlong(data["postal"])[0], latlong(data["postal"])[1]],
+                location=[data["lat"], data["long"]],
                 popup=popup,
                 icon=folium.Icon(color="blue", icon="cloud")
             ).add_to(custom_cluster)
                 
     rows = db.execute(
-        "SELECT des, date, time, pic, postal, username, profilepic FROM spots JOIN users on users.id=spots.p_id WHERE id != ?", sess_id)
+        "SELECT des, date, time, pic, postal, lat, long, username, profilepic FROM spots JOIN users on users.id=spots.p_id WHERE id != ?", sess_id)
     
     for data in rows:
         # Checks if custom function returns a value for Lat Long
-        if latlong(data["postal"]) == None:
+        if data["lat"] == None:
             continue
         else:
             try: 
@@ -182,7 +170,7 @@ def around():
             """, script=True)
             popup = folium.Popup(custom, max_width=700)
             folium.Marker(
-                location=[latlong(data["postal"])[0], latlong(data["postal"])[1]],
+                location=[data["lat"], data["long"]],
                 popup=popup,
                 icon=folium.Icon(color="red", icon="cloud")
             ).add_to(custom_cluster)
@@ -218,7 +206,17 @@ def create():
         des = request.form.get("des")
         postal = request.form.get("postal")
         
-        db.execute("INSERT INTO spots (p_id, des, pic, postal) VALUES (?, ?, ?, ?)", sess_id, des, filename, postal)
+        _placename = ""
+        try:
+            _placename = placename(postal)
+        except IndexError:
+            return apology("Invalid postal", 400)
+
+        coo = latlong(postal)
+        _lat = coo[0]
+        _long = coo[1]
+
+        db.execute("INSERT INTO spots (p_id, des, pic, postal, placename, lat, long) VALUES (?, ?, ?, ?, ?, ?, ?)", sess_id, des, filename, postal, _placename, _lat, _long)
         
         # Redirect user to success
         return redirect("/me")
@@ -256,7 +254,7 @@ def login():
         session["user_id"] = rows[0]["id"]
 
         # Redirect user to home page
-        return redirect("/me")
+        return redirect("/around")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:

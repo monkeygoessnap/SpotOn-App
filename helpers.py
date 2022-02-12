@@ -51,26 +51,18 @@ def allowed_file(filename):
 
 # custom function for returning placename SG postalcode       
 def placename(postal):
-    name = db.execute("SELECT placename FROM sg WHERE postal=?", postal)
-    if name:
-        name = name[0]["placename"]
-        return name
-    else:
-        name = "nil"
-        return name
-    #params = {
-    #        'searchVal': postal,
-    #        'returnGeom': 'Y',
-    #        'getAddrDetails': 'N',
-    #        'pageNum': "1"
-    #    }
-    #api_result = requests.get('https://developers.onemap.sg/commonapi/search', params, timeout=0.5)
-    #api_response = api_result.json()
-    #print(api_response["results"][0]["SEARCHVAL"])
-    #return (api_response["results"][0]["SEARCHVAL"])
+    params = {
+           'searchVal': postal,
+           'returnGeom': 'Y',
+           'getAddrDetails': 'N',
+           'pageNum': "1"
+       }
+    api_result = requests.get('https://developers.onemap.sg/commonapi/search', params, timeout=0.2)
+    api_response = api_result.json()
+    # print(api_response["results"][0]["SEARCHVAL"])
+    return (api_response["results"][0]["SEARCHVAL"])
 
 # custom function to create imagelocation for GET requests
-
 
 def joinroute(file):
     r = ["/static/images/", file]
@@ -79,26 +71,25 @@ def joinroute(file):
 
 # custom function to create latlong values to plot into Folium from SG postalcode
 
-
 def latlong(postal):
-    rows = db.execute("SELECT lat, long FROM sg WHERE postal=?", postal)
-    if rows:
-        coord = []
-        coord.append(float(rows[0]["lat"]))
-        coord.append(float(rows[0]["long"]))
-        return coord
-    else:
-        return None 
+    # rows = db.execute("SELECT lat, long FROM sg WHERE postal=?", postal)
+    # if rows:
+    #     coord = []
+    #     coord.append(float(rows[0]["lat"]))
+    #     coord.append(float(rows[0]["long"]))
+    #     return coord
+    # else:
+    #     return None 
     
-    #    params = {
-    #        'searchVal': postal,
-    #        'returnGeom': 'Y',
-    #        'getAddrDetails': 'N',
-    #        'pageNum': "1"
-    #    }
-    #api_result = requests.get('https://developers.onemap.sg/commonapi/search', params, timeout=0.2)
-    #api_response = api_result.json()
-    #coord = []
-    #coord.append(float(api_response["results"][0]["LATITUDE"]))
-    #coord.append(float(api_response["results"][0]["LONGITUDE"]))
-    #return coord
+    params = {
+           'searchVal': postal,
+           'returnGeom': 'Y',
+           'getAddrDetails': 'N',
+           'pageNum': "1"
+       }
+    api_result = requests.get('https://developers.onemap.sg/commonapi/search', params, timeout=0.2)
+    api_response = api_result.json()
+    coord = []
+    coord.append(float(api_response["results"][0]["LATITUDE"]))
+    coord.append(float(api_response["results"][0]["LONGITUDE"]))
+    return coord
