@@ -1,7 +1,8 @@
 # SPOTON
 ## Description:
-GUTS Team 14 Project for JP Morgan
+GUTS Team 14 Project for JP Morgan Challenge
 ## Problem Statement:
+A new way to be a better colleague.
 Social media platform nowadays contains too much noise (eg. Selfies) which doesn't really promote cohesion-ness within small communities.
 ## Our solution:
 Presenting to you SpotOn, an interactive social media platform which focuses on using a Map to help bring across Past, Present and Future Events for people in small social circles. 
