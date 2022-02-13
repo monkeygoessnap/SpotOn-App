@@ -9,6 +9,9 @@ Very ideal as it cuts off a lot of social media noises (eg. Selfies and stuffs) 
 ## Possible Scenarios:
 - Different departments within an office environment can use this app for cohesion purposes, even able to see and cross-join other department's cohesion by joining the groups respectively.
 - Groups of friends can use this app to note down worthy places to visit, and even list down gathering timings and places!
+## For Testing:
+- usernames (3 accounts): user1, user2, user3
+- password: 123
 ## Tech stack:
 Python, SQLite, HTML/CSS/JS
 ## 3rd-party Libraries:
