@@ -43,20 +43,25 @@
                         <li class="nav-item"><a class="nav-link" href="/me">My Spots</a></li>
                         <li class="nav-item"><a class="nav-link" href="/around">Around Me</a></li>
                         <li class="nav-item"><a class="nav-link" href="/create">Create New</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/groups">My Groups</a></li>
+                        <li class="nav-item">
+                            <form action="" method="POST">
+                                <label for="grps">Select Group: </label>
+                                <select id="grps" name="grps">
+                                    <option value="">All Groups</option>
+                                    {% if grps %}
+                                        {% for data in grps %}
+                                        <option value="{{ data[1] }}" {% if data[1] == s %} selected {% endif %}>{{ data[1] }}</option>
+                                        {% endfor %}
+                                    {% endif %}
+                                </select>
+                                <button type="submit" class="btn btn-info">Show Group</button>
+                            </form>
+                        </li>
                     </ul>
                     <ul class="navbar-nav ml-auto mt-2">
                         <li class="nav-item"><a class="nav-link" href="/profile">Profile</a></li>
                         <li class="nav-item"><a class="nav-link" href="/logout">LogOut</a></li>
-                    </ul>
-            {% else %}
-            <a class="navbar-brand" href="/"><img src="/static/img/spotonlogo_s.png" id="navlogo"><img src="static/img/spotonlogo_b.png" id="navlogo"></a>
-            <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar" data-toggle="collapse" type="button">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbar">
-                    <ul class="navbar-nav ml-auto mt-2">
-                        <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
                     </ul>
                 {% endif %}
             </div>

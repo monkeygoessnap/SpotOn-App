@@ -218,6 +218,33 @@ body {
     border-radius: 25px;
 }
 
+.form-popup {
+    display: none;
+    color: black;
+    text-align:center;
+    width: 100%;
+    margin: auto;
+    border: 3px solid #F1F1F1;
+    z-index: 9;
+}
+
+.form-container {
+  padding: 10px;
+  background-color:white;
+}
+
+.form-container input[type=text] {
+  max-width:80%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #F1F1F1;
+}
+
+.form-container input[type=text]:focus {
+  background-color: #DDD;
+  outline: none;
+}
 
 @media screen and (max-width: 500px) {
   .column {

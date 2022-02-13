@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Groups
+{% endblock %}
+
+{% block main %}
+
+    <div text-align="center">
+        <h1>My Groups</h1>
+    </div>
+    <button class="btn btn-warning" onclick="openForm()">New Group</button>
+    <hr>
+    <div class="form-popup" id="myForm">
+      <form action="" class="form-container" method="POST">
+        <label for="name"><b>New Group</b></label>
+        <input type="text" placeholder="Enter Group Name" name="name" required>
+        <button type="submit" class="btn btn-warning" name="join" value="1">Join</button>
+        <button type="submit" class="btn btn-info">Create</button>
+        <button type="button" class="btn btn-danger" onclick="closeForm()">Close</button>
+      </form>
+    </div>
+    <br>
+    {% if rows %}
+      {% for data in rows %}
+      <form action="" method="POST">
+      <p>Group | {{ data[0] }}
+      <button type="submit" class="btn btn-danger" name="del" value="{{ data[1] }}">Quit</button></p></form>
+      <p>Members:</p>
+        {% for n in grpname %}
+            {% if n[0] == data[0] %}
+              {{ n[1] }}  
+            {% endif %}
+        {% endfor %}
+        <hr>
+      {% endfor %}
+    {% else %}
+      <p>No groups joined!</p>
+    {% endif %}
+      
+      <script>
+      function openForm() {
+        document.getElementById("myForm").style.display = "block";
+      }
+      
+      function closeForm() {
+        document.getElementById("myForm").style.display = "none";
+      }
+      </script>
+
+
+{% endblock %}

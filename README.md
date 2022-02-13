@@ -1,6 +1,6 @@
 # SPOTON
 ## Description:
-GUTS Team 14 Project for SAS
+GUTS Team 14 Project for JP Morgan
 ## Tech stack:
 Python, SQLite, HTML/CSS/JS
 ## 3rd-party Libraries:

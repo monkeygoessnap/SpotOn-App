@@ -54,7 +54,7 @@ def me():
     """Me Page"""
 
     sess_id = session["user_id"]
-    rows = db.execute("SELECT COUNT(p_id), des, postal, placename, date, time, pic, p_id FROM spots WHERE p_id = ? ORDER BY date DESC, time DESC", (sess_id,)).fetchall()
+    rows = db.execute("SELECT des, postal, placename, date, time, pic, p_id FROM spots WHERE p_id = ? ORDER BY date DESC, time DESC", (sess_id,)).fetchall()
     username = db.execute("SELECT username FROM users WHERE id = ?", (sess_id,)).fetchone()[0]
 
     if request.method == "POST":
@@ -121,14 +121,20 @@ def change():
     else:
         return render_template("change.html")
     
-@app.route("/around", methods=["GET"])
+@app.route("/around", methods=["GET", "POST"])
 @login_required
 def around():
     """Around Me Page"""
-
     sess_id = session["user_id"]
     # Folium Map Initialization center to SG
     m = folium.Map(location=[1.3541, 103.8198], tiles="OpenStreetMap", zoom_start=12, control_scale=True)
+    grps = db.execute("SELECT gid, gname FROM grps WHERE uid = ?", (sess_id,)).fetchall()
+    s = request.args.get("grps")
+
+    if request.method == "POST":
+        selected = request.form.get("grps")
+        return redirect("/around?grps=" + selected)
+
     rows = db.execute(
         "SELECT des, date, time, pic, postal, lat, long, placename, username, profilepic FROM spots JOIN users on users.id=spots.p_id WHERE id = ?", (sess_id,)).fetchall()
     
@@ -159,9 +165,14 @@ def around():
                 popup=popup,
                 icon=folium.Icon(color="red", icon="info-sign")
             ).add_to(custom_cluster)
-                
-    rows = db.execute(
-        "SELECT des, date, time, pic, postal, lat, long, placename, username, profilepic FROM spots JOIN users on users.id=spots.p_id WHERE id != ?", (sess_id,)).fetchall()
+    
+    if s == "" or None:
+        rows = db.execute(
+        "SELECT des, date, time, pic, postal, lat, long, placename, username, profilepic FROM spots JOIN users on users.id=spots.p_id WHERE id != ? AND id IN (SELECT uid FROM grps JOIN users ON users.id=grps.uid WHERE gname IN (SELECT gname FROM grps WHERE uid = ?))", (sess_id, sess_id,)).fetchall()
+    
+    else:
+        rows = db.execute(
+        "SELECT des, date, time, pic, postal, lat, long, placename, username, profilepic FROM spots JOIN users on users.id=spots.p_id WHERE id != ? AND id IN (SELECT uid FROM grps WHERE gname = ?)", (sess_id, s,)).fetchall()
     
     for data in rows:
         # Checks if custom function returns a value for Lat Long
@@ -189,7 +200,7 @@ def around():
     plugins.LocateControl(auto_start=False).add_to(m)
     custom_cluster.add_to(m)
     
-    return render_template("around.html", map=m._repr_html_())
+    return render_template("around.html", map=m._repr_html_(), grps=grps, s=s)
 
 
 @app.route("/create", methods=["GET", "POST"])
@@ -238,6 +249,35 @@ def create():
     else:
         return render_template("create.html")
         
+@app.route("/groups", methods=["GET", "POST"])
+@login_required
+def groups():
+    """Groups"""
+    # User reached route via POST (as by submitting a form via POST)
+
+    sess_id = session["user_id"]
+    rows = db.execute("SELECT gname, gid FROM grps WHERE uid = ?", (sess_id,)).fetchall()
+
+    grpname = db.execute("SELECT gname, username FROM users JOIN grps ON grps.uid=users.id").fetchall()
+
+    if request.method == "POST":
+        if request.form.get("del") != None:
+            db.execute("DELETE FROM grps WHERE gid = ? AND uid = ?", (request.form.get("del"), sess_id))
+        elif request.form.get("join") == "1":
+            if db.execute("SELECT COUNT(gname) FROM grps WHERE gname = ? and uid != ?", (request.form.get("name"), sess_id,)).fetchone()[0] != 0:
+                db.execute("INSERT INTO grps(gname, uid) VALUES (?,?)", (request.form.get("name"),sess_id,))
+            else:
+                return apology("Group doesnt exist or already joined", 400)
+        else:
+            if db.execute("SELECT COUNT(gname) FROM grps WHERE gname = ?", (request.form.get("name"),)).fetchone()[0] == 0:
+                db.execute("INSERT INTO grps(gname, uid) VALUES (?,?)", (request.form.get("name"),sess_id,))
+            else:
+                return apology("Group exists", 400)
+
+        db.commit()
+        return redirect("/groups")
+
+    return render_template("grps.html", rows=rows, grpname=grpname)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

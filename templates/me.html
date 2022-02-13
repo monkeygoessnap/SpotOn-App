@@ -9,20 +9,20 @@
         <h1>{{ username }}'s Spots</h1>
         <i>The more the merrier!</i>
     </div>
-    {% if rows[0][0]==0 %}
+    {% if not rows %}
         <br>Looking a little bit empty here, why not <a href="/create" style="color:#000000; font-size:20px">create one</a> today!<br>
     {% else %}
     <div class="row" text-align="center">
         {% for data in rows %}
         <div class="coloumn">
             <div id="box">
-                <img src={{ data[6] | joinroute }} style="max-height:55%; max-width:100%"><br>
+                <img src={{ data[5] | joinroute }} style="max-height:55%; max-width:100%"><br>
                 <div style="padding-left:2px;padding-right:2px">
-                Event | {{ data[1] }}<br>
-                Postal | {{ data[2] }}<br>
-                Place | {{ data[3] }}<br>
-                Created On {{ data[4] }} | 
-                {{ data[5] }}<br>
+                Event | {{ data[0] }}<br>
+                Postal | {{ data[1] }}<br>
+                Place | {{ data[2] }}<br>
+                Created On {{ data[3] }} | 
+                {{ data[4] }}<br>
                 <form action="" method="post">
                 <button class="btn btn-danger" type="submit" name="del" value="{{ data[7] }}">Delete</button></form><br>
                 </div>
